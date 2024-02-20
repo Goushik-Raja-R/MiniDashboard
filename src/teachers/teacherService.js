@@ -15,7 +15,6 @@ module.exports.createTeacherDBservice = async (teacherDetails)=>{
         const encrypted = encryptor.encrypt(teacherDetails.Password);
         TeachersData.Password=encrypted;
         TeachersData.Role = teacherDetails.Role;
-
         await TeachersData.save();
         return true;
         }
@@ -56,3 +55,25 @@ module.exports.loginTeacherDBservice = async(details)=>{
     console.log(error)
     }
 }
+
+module.exports.DeleteteacherDBservice = async(TeacherData)=>{
+    
+    try{
+    const deleteTeacher = await teacherModel.findOneAndDelete({Email:TeacherData.Email})
+
+    if(deleteTeacher){
+        console.log("Teacher Data deleted from the Database")
+        return true;
+    }
+    else{
+        console.log("Teacher Not found or maybe Already Deleted")
+        return false;
+    }
+    }
+    catch(err){
+       console.log("Teacher Not found",err)
+       return false;
+    }
+
+}
+

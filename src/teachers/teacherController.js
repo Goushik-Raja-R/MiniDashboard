@@ -36,4 +36,22 @@ const loginTeacherController = async(req,res)=>{
     }
 }
 
-module.exports={createTeacherController,loginTeacherController};
+const deleteTeacherController = async(req,res)=>{
+
+    try{
+        const email = req.body;
+        const status = await teacherService.DeleteteacherDBservice(email)
+        if(status){
+            res.send({"status":true, "message":"Teacher Data Deleted Successfully"})
+        }else{
+            res.send({"status":false, "message":"Teacher Data Not found"})
+        }
+    }
+    catch(err){
+        console.log(err);
+        res.send({"status":false, "message": "Teacher Data Not found or maybe Already deleted"})
+    }
+}
+
+
+module.exports={createTeacherController,loginTeacherController,deleteTeacherController};
