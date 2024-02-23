@@ -17,3 +17,4 @@ router.route('/students/get').get(studentController.showAllStudentsController);
 
 
 module.exports=router;
+console.log('End')
