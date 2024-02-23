@@ -53,5 +53,22 @@ const deleteTeacherController = async(req,res)=>{
     }
 }
 
+const showAllTeacherController = async (req, res) => {
+    try {
+        const AllTeachers = await teacherService.GetAllTeachersService(); 
 
-module.exports={createTeacherController,loginTeacherController,deleteTeacherController};
+        if (AllTeachers.length > 0) {
+            res.send({ "status": true, "teachers": AllTeachers });
+        } else {
+            res.send({ "status": false, "message": "No teachers found." });
+        }
+    } catch (error) {
+        console.error("Error in showAllTeacherController:", error);
+        res.status(500).send({ "status": false, "message": "Internal Server Error" });
+    }
+};
+
+
+module.exports={createTeacherController,loginTeacherController,deleteTeacherController,showAllTeacherController};
+
+/**/

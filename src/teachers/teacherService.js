@@ -1,8 +1,8 @@
 const teacherModel = require('./teacherModel');
-const key = '123456789mairuuu';
+const key = '123456789rsrtyurereer';
 const encryptor = require('simple-encryptor')(key);
 
-
+ 
 module.exports.createTeacherDBservice = async (teacherDetails)=>{
 
        try{
@@ -74,6 +74,17 @@ module.exports.DeleteteacherDBservice = async(TeacherData)=>{
        console.log("Teacher Not found",err)
        return false;
     }
+}
 
+module.exports.GetAllTeachersService = async()=>{
+
+    try{
+        const AllTeacher = await teacherModel.find();
+        return AllTeacher;
+    }
+    catch(err){
+        console.log("There is no data found in Database",err)
+        return false;
+    }
 }
 
