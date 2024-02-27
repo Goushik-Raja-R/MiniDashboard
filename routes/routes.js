@@ -17,4 +17,8 @@ router.route('/students/get').get(studentController.showAllStudentsController);
 
 
 module.exports=router;
+<<<<<<< HEAD
 
+=======
+console.log('End')
+>>>>>>> d5d9571ec54e58a0615b6b3218598bccdb588964
