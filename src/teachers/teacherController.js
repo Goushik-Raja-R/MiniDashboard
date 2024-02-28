@@ -3,6 +3,12 @@ const teacherService = require('./teacherService');
 const createTeacherController = async(req,res)=>{
 
     try{
+        const ExistingTeacher = await teacherService.FindTeacherbyEmail(req.body.email)
+
+        if(ExistingTeacher){
+            res.send({"status":false, "message":"Teachers data is Already Existing in DB"})
+            return;
+        }
         console.log(req.body)
         const status = await teacherService.createTeacherDBservice(req.body);
         console.log(status)
@@ -11,10 +17,10 @@ const createTeacherController = async(req,res)=>{
         }else{
             res.send({"status":false, "message":"Error in Creating User"})
         }
-    }
-    catch(err)
+     }
+    catch(error)
     {
-       console.log(err);
+       console.log(error);
     }
 }
 

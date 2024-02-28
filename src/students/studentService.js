@@ -24,6 +24,11 @@ module.exports.createUserDBService =async (studentsDetails)=>{
    
 }
 
+module.exports.FindStudentbyEmail = async(email)=>{
+    return studentsmodel.find({Email:email}).exec()
+}
+
+
 module.exports.loginStudentsDBservice = async (studentsDetails)=>
 {
     try
