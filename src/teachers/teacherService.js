@@ -28,7 +28,12 @@ module.exports.createTeacherDBservice = async (teacherDetails)=>{
        // return TeachersData;
 
 module.exports.FindTeacherbyEmail = async(email)=>{
-    return teacherModel.find({Email:email}).exec()
+    const response = teacherModel.findOne({Email:email}).exec()
+
+    if(response && response.length>0)
+    return response
+    else
+    return null;
 }
 
 module.exports.loginTeacherDBservice = async(details)=>{
