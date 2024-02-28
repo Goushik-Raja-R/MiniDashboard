@@ -27,6 +27,9 @@ module.exports.createTeacherDBservice = async (teacherDetails)=>{
 }
        // return TeachersData;
 
+module.exports.FindTeacherbyEmail = async(email)=>{
+    return teacherModel.find({Email:email}).exec()
+}
 
 module.exports.loginTeacherDBservice = async(details)=>{
 
