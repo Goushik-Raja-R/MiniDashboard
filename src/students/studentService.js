@@ -24,9 +24,10 @@ module.exports.createUserDBService =async (studentsDetails)=>{
    
 }
 
-module.exports.FindStudentbyEmail = async(email)=>{
-   const response = await studentsmodel.findOne({Email:email}).exec()
 
+module.exports.FindStudentbyEmail = async(email)=>{
+
+   const response = await studentsmodel.findOne({Email:email}).exec()
    if(response && response.length>0)
    return response;
    else

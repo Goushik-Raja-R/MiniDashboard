@@ -1,5 +1,9 @@
 const teacherService = require('./teacherService');
 
+const handleErrors =(err)=>{
+    console.log(err.message,err.code);
+}
+
 const createTeacherController = async(req,res)=>{
 
     try{
@@ -9,18 +13,18 @@ const createTeacherController = async(req,res)=>{
             res.send({"status":false, "message":"Teachers data is Already Existing in DB"})
             return;
         }
-        console.log(req.body)
         const status = await teacherService.createTeacherDBservice(req.body);
-        console.log(status)
+
         if(status){
             res.send({"status":true, "message":" User Created Successfully"})
         }else{
-            res.send({"status":false, "message":"Error in Creating User"})
+            res.send({"status":false, "message":"Error in Creating Teacher User [Check Your EMAIL or PASSWORD] and Enter details Properply"})
         }
      }
     catch(error)
     {
-       console.log(error);
+        console.log(err);
+        res.status(500).send({"status": false, "message": "Internal Server Error"});
     }
 }
 
