@@ -9,6 +9,10 @@ const isValidEmail = (email) => {
     return isEmail(email) && allowedDomains.includes(domain); //validate the email and check if the email conatin the allowed domains
   };
 
+const isValidPassword = (password)=>{
+    return password.length>=6;
+}
+
 const teacherSchema = new Schema({
 
     Firstname:{
@@ -29,8 +33,8 @@ const teacherSchema = new Schema({
     Password:{
         type: String,
         required: [true,"Please enter password"],
-        minlength:[6,"minimum password length is 6 characters"],
-        unique:true,
+        minlength:[isValidPassword,"minimum password length is 6 characters"], //calling isValidPassword function
+       // unique:true,
     },
     Role:{
         type: String,
