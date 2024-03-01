@@ -18,10 +18,10 @@ module.exports.createUserDBService =async (studentsDetails)=>{
         return true;
         }
         catch(error){
-            console.log("There is an error in CreatestudentsDBservice",error);
+            console.log(Object.values(error.errors));
             return false;
         }
-   
+        
 }
 
 

@@ -21,7 +21,7 @@ module.exports.createTeacherDBservice = async (teacherDetails)=>{
 
     catch(error)
     {
-       console.log("There is an error in createTeacherDbservice",error)
+       console.log(Object.values(error.errors))
        return false;
     }
 }
