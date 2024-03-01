@@ -1,5 +1,6 @@
 var studentsService = require('./studentService');
 
+
 var createstudentsController = async (req, res) => {
     try {
         const ExistingStudent = await studentsService.FindStudentbyEmail(req.body.email)
@@ -8,15 +9,12 @@ var createstudentsController = async (req, res) => {
             res.send({"status":false, "message":"Students data is Already Existing in DB"})
             return;
         }
-        
-        console.log(req.body);
         var status = await studentsService.createUserDBService(req.body);
-        console.log(status);
 
         if (status) {
             res.send({"status": true, "message": "Student created successfully"});
         } else {
-            res.send({"status": false, "message": "Error creating user"});
+            res.send({"status":false, "message":"Error in Creating Student User [Check Your EMAIL or PASSWORD] and Enter details Properply"})
         }
     } catch (err) {
         console.log(err);
