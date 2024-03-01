@@ -1,9 +1,5 @@
 const teacherService = require('./teacherService');
 
-const handleErrors =(err)=>{
-    console.log(err.message,err.code);
-}
-
 const createTeacherController = async(req,res)=>{
 
     try{
@@ -81,4 +77,3 @@ const showAllTeacherController = async (req, res) => {
 
 module.exports={createTeacherController,loginTeacherController,deleteTeacherController,showAllTeacherController};
 
-/**/
