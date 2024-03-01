@@ -2,6 +2,13 @@ const mongoose = require('mongoose');
 var schema = mongoose.Schema;
 const {isEmail} = require('validator');
 
+const isValidEmail =(email)=>{
+    const allowedDomains =['gmail.com','example.com']
+    const domain = email.split('@')[1];
+
+    return isEmail(email) && allowedDomains.includes(domain)
+}
+
 const studentsSchema = new schema({
     Firstname:{
         type:String,
@@ -16,7 +23,7 @@ const studentsSchema = new schema({
         type:String,
         required:[true,"Please enter Email"],
         lowercase:true,
-        validate:[isEmail,"Please enter the valid Email"]
+        validate:[isValidEmail,"Please enter the valid Email"]
     },
     Password:{
         type:String,
