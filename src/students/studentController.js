@@ -3,7 +3,7 @@ var studentsService = require('./studentService');
 
 var createstudentsController = async (req, res) => {
     try {
-        const ExistingStudent = await studentsService.FindStudentbyEmail(req.body.email)
+        const ExistingStudent = await studentsService.FindStudentbyEmail(req.body.email)  
 
         if(ExistingStudent){
             res.send({"status":false, "message":"Students data is Already Existing in DB"})
