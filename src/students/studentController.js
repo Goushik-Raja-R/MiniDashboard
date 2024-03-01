@@ -13,6 +13,7 @@ var createstudentsController = async (req, res) => {
 
         if (status) {
             res.send({"status": true, "message": "Student created successfully"});
+            console.log("Student created successfully")
         } else {
             res.send({"status":false, "message":"Error in Creating Student User [Check Your EMAIL or PASSWORD] and Enter details Properply"})
         }
