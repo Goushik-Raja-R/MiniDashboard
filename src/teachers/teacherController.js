@@ -19,8 +19,8 @@ const createTeacherController = async(req,res)=>{
      }
     catch(error)
     {
-        console.log(err);
-        res.status(500).send({"status": false, "message": "Internal Server Error"});
+        console.log(error);
+        res.status(500).send({"status": false, "message": "Teacher data you are trying to inserting is already Existing in DB"});
     }
 }
 

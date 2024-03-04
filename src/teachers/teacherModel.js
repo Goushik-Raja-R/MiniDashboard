@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const {isEmail} = require('validator');
+var key ='123456789112345dfg';
+var encryptor = require('simple-encryptor')(key);
 
 const isValidEmail = (email) => {
     const allowedDomains = ['gmail.com', 'example.com']; // Add your allowed domains
@@ -9,8 +11,12 @@ const isValidEmail = (email) => {
     return isEmail(email) && allowedDomains.includes(domain); //validate the email and check if the email conatin the allowed domains
   };
 
-const isValidPassword = (password)=>{
-    return password.length>=6;
+  const isValidPassword = (password)=>{
+    console.log("validation password",password)
+    var decrypted = encryptor.decrypt(password)
+    console.log(decrypted)
+    const isvalid= decrypted.length>=6;
+    return isvalid
 }
 
 const teacherSchema = new Schema({
@@ -33,8 +39,8 @@ const teacherSchema = new Schema({
     Password:{
         type: String,
         required: [true,"Please enter password"],
-        minlength:[isValidPassword,"minimum password length is 6 characters"], //calling isValidPassword function
-       // unique:true,
+    //  minlength:[6,"minimum password length is 6 characters"], //calling isValidPassword function
+    //  validate:[isValidPassword,"minimum password length is 6 characters"]
     },
     Role:{
         type: String,

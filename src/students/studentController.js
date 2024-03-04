@@ -19,7 +19,7 @@ var createstudentsController = async (req, res) => {
         }
     } catch (err) {
         console.log(err);
-        res.status(500).send({"status": false, "message": "Internal Server Error"});
+        res.status(500).send({"status": false, "message": "Student data you are trying to inserting is already Existing in DB"});
     }
 };
 
@@ -32,7 +32,7 @@ var loginstudentsController = async(req,res)=>{
         if(result){
             res.send({"status":true,"message":"students details valid"});
         }else{
-            res.send({"status": true,"message": "students details valid"});
+            res.send({"status": false,"message": "students details Invalid"});
         }
     } catch (error){
         console.log(error);

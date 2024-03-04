@@ -16,7 +16,6 @@ db.once('open',()=>{
     console.log("DB Connected Successfully")
 })
 
-
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(routes);
