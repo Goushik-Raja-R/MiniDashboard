@@ -27,13 +27,15 @@ var createstudentsController = async (req, res) => {
 var loginstudentsController = async(req,res)=>{
     var result = null;
     try{
-        console.log(req.body)
+
         result = await studentsService.loginStudentsDBservice(req.body);
+    
         if(result){
             res.send({"status":true,"message":"students details valid"});
         }else{
-            res.send({"status": false,"message": "students details Invalid"});
+            res.send({"status": false,"message": "Invalid Teachers Details Check Password (or) Email properly"});
         }
+        
     } catch (error){
         console.log(error);
         res.send({"status":false,"message":"students details invalid"});

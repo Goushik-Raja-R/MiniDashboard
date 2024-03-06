@@ -45,16 +45,19 @@ module.exports.loginStudentsDBservice = async (studentsDetails)=>
                 {
                     var decrypted = encryptor.decrypt(result.Password);
 
-                    if(decrypted=== studentsDetails.Password)
+                    if(decrypted === studentsDetails.Password)
                     {
                         console.log("student validated successfully");
+                        return true
                     }
                     else{
                         console.log("student validated failed");
+                        return false
                     }
                 }
                 else{
                     console.log("invalid students detailsssss");
+                    return false
                 }
             }
         }
