@@ -41,9 +41,10 @@ module.exports.loginTeacherDBservice = async(details)=>{
     try{
         const result = await teacherModel.findOne({Email:details.Email});
 
-        if(result!==null)
+        if(result!== undefined && result!==null)
         {
             var decryptor = encryptor.decrypt(result.Password)
+            
             if(decryptor===details.Password)
             {
                 console.log("Teachers Details are valid")
