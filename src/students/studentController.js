@@ -1,5 +1,22 @@
 var studentsService = require('./studentService');
+const studentModel = require('../students/studentModel')
 
+
+/*const handleErrors =(error)=>{
+    console.log(error.message,error.code);
+    let errors ={Email:" ",Password:" "}
+
+    if(error.message && error.message.includes('ValidatorError')){
+        Object.values(error.errors).forEach(({properties})=>{
+            errors[properties.path] = properties.message
+            console.log("checking the error message",error.message)
+        });
+    }else{
+        console.log("checking the error message",error.message)
+    }
+
+    return errors
+}*/
 
 var createstudentsController = async (req, res) => {
     try {
@@ -31,13 +48,30 @@ var loginstudentsController = async(req,res)=>{
         result = await studentsService.loginStudentsDBservice(req.body);
     
         if(result){
-            res.send({"status":true,"message":"students details valid"});
+
+            const studentsdetail = await studentModel.findOne({Email:req.body.Email});
+            if(studentsdetail){
+                res.send({
+                    status:true,
+                    message:"Student details is valid",
+                    data:{
+                        Firstname:studentsdetail.Firstname,
+                        Lastname:studentsdetail.Lastname,
+                        Email:studentsdetail.Email,
+                    }
+                });
+            }else{
+                res.send({"status":false,"message":"students details  Invalid"});
+            }
         }else{
-            res.send({"status": false,"message": "Invalid Teachers Details Check Password (or) Email properly"});
+          /* const errors = handleErrors(error)
+            res.status(400).json(errors)*/
+            res.send({"status":false, "message":"Invalid Teachers Details Check Password (or) Email properly"})
         }
         
     } catch (error){
-        console.log(error);
+      /*  const errors = handleErrors(error)
+        res.status(400).json(errors)*/
         res.send({"status":false,"message":"students details invalid"});
     }
 }

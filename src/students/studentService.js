@@ -18,7 +18,7 @@ module.exports.createUserDBService =async (studentsDetails)=>{
         return true;
         }
         catch(error){
-            console.log(Object.values(error.errors));
+            console.log(Object.values(error.errors.properties));
             return false;
         }
         
@@ -61,8 +61,8 @@ module.exports.loginStudentsDBservice = async (studentsDetails)=>
                 }
             }
         }
-    catch(error){
-        console.log(error)
+    catch(err){
+        console.log(err)
     }
 }
 
