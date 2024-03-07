@@ -1,5 +1,5 @@
 const teacherService = require('./teacherService');
-
+const teacherModel = require('../teachers/teacherModel')
 const createTeacherController = async(req,res)=>{
 
     try{
@@ -28,16 +28,30 @@ const loginTeacherController = async(req,res)=>{
     
     var result=null;
     try{
-        console.log(req.body)
         result = await teacherService.loginTeacherDBservice(req.body);
         if(result){
-            res.send({"status":true, "message": "Valid Teachers Details"})
+
+            const teacherdetail = await teacherModel.findOne({Email:req.body.Email});
+
+            if(teacherdetail){
+                res.send({
+                    status:true,
+                    message:"teacher Data Valid",
+                    data:{
+                        Firstname:teacherdetail.Firstname,
+                        Lastname:teacherdetail.Lastname,
+                        Email:teacherdetail.Email,
+                        Role:teacherdetail.Role,
+                    }
+                });
+            }else{
+            res.send({"status":true, "message": "InValid Teachers Details"})
+            }
         }else{
             res.send({"status":false, "message":"Invalid Teachers Details Check Password (or) Email properly"})
         }
     }
     catch(error){
-        console.log(error);
         res.send({"status":false, "message":error.message})
     }
 }
