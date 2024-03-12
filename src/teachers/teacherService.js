@@ -1,4 +1,4 @@
-const teacherModel = require('./teacherModel');
+const teacherModel = require('../teachers/teacherModel');
 const key = '123456789rsrtyurereer';
 const encryptor = require('simple-encryptor')(key);
 

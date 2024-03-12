@@ -5,7 +5,7 @@ var encryptor = require('simple-encryptor')(key);
 
 const isValidEmail = (email) => {
 
-    const allowedDomains = ['gmail.com', 'example.com']; // Add your allowed domains
+    const allowedDomains = ['gmail.com', 'example.com','google.com']; // Add your allowed domains
     const domain = email.split('@')[1];
     const EmailRegex =/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
@@ -44,6 +44,16 @@ const teacherSchema = new Schema({
         type: String,
         required: true,
     }
+});
+
+teacherSchema.post('save',function(doc,next){
+    console.log("New Teacher was created and saved",doc)
+    next();
+})
+
+teacherSchema.pre('save',function(next){
+    console.log("New Teacher is about to be created and saved",this)
+    next();
 });
 
 module.exports = mongoose.model('Teachers',teacherSchema);

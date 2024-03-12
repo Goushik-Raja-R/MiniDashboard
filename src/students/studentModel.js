@@ -42,4 +42,14 @@ const studentsSchema = new schema({
     }
 });
 
+/*studentsSchema.post('save',function(doc,next){
+    console.log("New Student was created and saved",doc)
+    next();
+})
+
+studentsSchema.pre('save',function(next){
+    console.log("New Student is about to be created and saved",this)
+    next();
+});*/
+
 module.exports = mongoose.model('Students', studentsSchema);

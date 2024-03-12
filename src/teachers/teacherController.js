@@ -1,5 +1,14 @@
+const express = require('express')
 const teacherService = require('./teacherService');
 const teacherModel = require('../teachers/teacherModel')
+const uuid = require('uuid').v4
+const cookieParser = require('cookie-parser')
+const app = express()
+app.use(express.json());
+app.use(cookieParser());
+
+
+
 const createTeacherController = async(req,res)=>{
 
     try{
@@ -24,6 +33,8 @@ const createTeacherController = async(req,res)=>{
     }
 }
 
+
+const session ={};
 const loginTeacherController = async(req,res)=>{
     
     var result=null;
@@ -34,9 +45,15 @@ const loginTeacherController = async(req,res)=>{
             const teacherdetail = await teacherModel.findOne({Email:req.body.Email});
 
             if(teacherdetail){
+
+                const sessionid = uuid();
+                const SessionData ={Email:teacherdetail.Email,Password:teacherdetail.Password}
+                session[sessionid]=SessionData
+                res.cookie('session', sessionid, { httpOnly: true });
+
                 res.send({
                     status:true,
-                    message:"teacher Data Valid",
+                    message:"Cookies created Successfully",
                     data:{
                         Firstname:teacherdetail.Firstname,
                         Lastname:teacherdetail.Lastname,
@@ -44,8 +61,6 @@ const loginTeacherController = async(req,res)=>{
                         Role:teacherdetail.Role,
                     }
                 });
-            }else{
-            res.send({"status":true, "message": "InValid Teachers Details"})
             }
         }else{
             res.send({"status":false, "message":"Invalid Teachers Details Check Password (or) Email properly"})
@@ -54,6 +69,47 @@ const loginTeacherController = async(req,res)=>{
     catch(error){
         res.send({"status":false, "message":error.message})
     }
+}
+
+const CurrentTeacher = async(req,res)=>{
+
+    const sessionid = req.headers.cookie?.split('=')[1];
+    const TeacherSession = await session[sessionid];
+
+
+    if(!TeacherSession){
+        return res.status(401).send("User Session No longer Exist")
+    }
+
+    const TeacherEmail = await TeacherSession.Email;
+    const Password = await TeacherSession.Password;
+
+    try{
+        const TeacherDetail = await teacherModel.findOne({Email:TeacherEmail})
+
+        if(TeacherDetail){
+            res.send({
+                status:true,
+                message:"Teacher Details Retreived Successfully",
+                Firstname:TeacherDetail.Firstname,
+                Lastname:TeacherDetail.Lastname,
+                Email:TeacherDetail.Email,
+                Role:TeacherDetail.Role
+            })
+        }
+    }catch(err){
+        console.error(err);
+        res.status(500).send("Internal Server Error");
+    }
+}
+
+const TeacherLogout = async(req,res)=>{
+    const sessionid = req.headers.cookie && req.headers.cookie.split('=')[1];
+    delete session[sessionid];
+
+    res.cookie('session','',{expires: new Date(0)});
+    return res.send("Teacher Logout successfully")
+
 }
 
 const deleteTeacherController = async(req,res)=>{
@@ -89,5 +145,5 @@ const showAllTeacherController = async (req, res) => {
 };
 
 
-module.exports={createTeacherController,loginTeacherController,deleteTeacherController,showAllTeacherController};
+module.exports={createTeacherController,loginTeacherController,deleteTeacherController,showAllTeacherController,CurrentTeacher,TeacherLogout};
 
