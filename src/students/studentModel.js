@@ -8,9 +8,9 @@ const isValidEmail = (email) => {
     const domain = email.split('@')[1];
   
     const EmailRegex =/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
+  
     return EmailRegex.test(email) && allowedDomains.includes(domain); //validate the email and check if the email conatin the allowed domains
-  };
+};
 
 const isValidPassword = (password)=>{
     var decrypted = encryptor.decrypt(password)
@@ -41,15 +41,5 @@ const studentsSchema = new schema({
         validate:[isValidPassword,"minimum password length is 6 characters"] //call to the function isValidPassword
     }
 });
-
-/*studentsSchema.post('save',function(doc,next){
-    console.log("New Student was created and saved",doc)
-    next();
-})
-
-studentsSchema.pre('save',function(next){
-    console.log("New Student is about to be created and saved",this)
-    next();
-});*/
 
 module.exports = mongoose.model('Students', studentsSchema);

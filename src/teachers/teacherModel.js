@@ -4,7 +4,6 @@ var key ='123456789rsrtyurereer';
 var encryptor = require('simple-encryptor')(key);
 
 const isValidEmail = (email) => {
-
     const allowedDomains = ['gmail.com', 'example.com','google.com']; // Add your allowed domains
     const domain = email.split('@')[1];
     const EmailRegex =/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;

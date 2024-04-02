@@ -1,7 +1,7 @@
 const teacherModel = require('../teachers/teacherModel');
 const key = '123456789rsrtyurereer';
 const encryptor = require('simple-encryptor')(key);
-
+const {GenerateToken} = require('../../middleware/auth')
  
 module.exports.createTeacherDBservice = async (teacherDetails)=>{
 
@@ -15,13 +15,13 @@ module.exports.createTeacherDBservice = async (teacherDetails)=>{
         const encrypted = encryptor.encrypt(teacherDetails.Password);
         TeachersData.Password=encrypted;
         TeachersData.Role = teacherDetails.Role;
+        const token = GenerateToken(teacherDetails.Email)
         await TeachersData.save();
-        return true;
+        return {success:true,token};
         }
-
     catch(error)
     {
-       console.log(Object.values(error.errors))
+       console.log(error)
        return false;
     }
 }

@@ -3,11 +3,10 @@ const express = require('express')
 const dotenv = require('dotenv')
 const app = express()
 dotenv.config();
-const StudentModel = require('../src/students/studentModel')
 
 const GenerateToken =(email)=>{
     return jwt.sign({email},process.env.SECRET_KEY,{
-        expiresIn:'1h'
+        expiresIn:'1d'
     })
 }
 
@@ -20,7 +19,7 @@ var Authentication = (req, res, next) => {
     jwt.verify(token,process.env.SECRET_KEY, (err, decoded) => {
         if (err) {
             console.error('Error verifying token:', err);
-            return res.sendStatus(403); // Send forbidden status for invalid token
+            return res.sendStatus(401); // Send unauthorized status for invalid token
         }
         req.user = decoded; // Attach user information to request object
         next();

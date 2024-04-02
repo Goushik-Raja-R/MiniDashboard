@@ -9,13 +9,13 @@ module.exports.createUserDBService =async (studentsDetails)=>{
  
     try{
     var studentsModelData = new studentsmodel();
-
     studentsModelData.Firstname = studentsDetails.Firstname;
     studentsModelData.Lastname = studentsDetails.Lastname;
     studentsModelData.Email = studentsDetails.Email;
     studentsModelData.Password = studentsDetails.Password;
     var encrypted= encryptor.encrypt(studentsDetails.Password);
     studentsModelData.Password = encrypted;
+    studentsModelData.Role = studentsDetails.Role;
     const token = GenerateToken(studentsDetails.Email)
     console.log(token)
     await studentsModelData.save();
@@ -25,9 +25,7 @@ module.exports.createUserDBService =async (studentsDetails)=>{
         console.log(Object.values(error));
         return false;
     }
-    
 }
-
 
 module.exports.FindStudentbyEmail = async(email)=>{
 

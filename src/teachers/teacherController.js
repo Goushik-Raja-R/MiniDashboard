@@ -8,7 +8,6 @@ app.use(express.json());
 app.use(cookieParser());
 
 
-
 const createTeacherController = async(req,res)=>{
 
     try{
@@ -19,11 +18,20 @@ const createTeacherController = async(req,res)=>{
             return;
         }
         const status = await teacherService.createTeacherDBservice(req.body);
-
-        if(status){
-            res.send({"status":true, "message":" User Created Successfully"})
-        }else{
-            res.send({"status":false, "message":"Error in Creating Teacher User [Check Your EMAIL or PASSWORD] and Enter details Properply"})
+        console.log(status)
+        if (status.success){
+            res.status(201).send({
+                status: true,
+                message: 'Teacher created successfully',
+                token: status.token
+            });
+            console.log('Teacher created successfully');
+        }else {
+            res.status(500).send({
+                status: false,
+                message: 'Error in Creating Student User',
+                error: status.error
+            });
         }
      }
     catch(error)
@@ -71,47 +79,6 @@ const loginTeacherController = async(req,res)=>{
     }
 }
 
-const CurrentTeacher = async(req,res)=>{
-
-    const sessionid = req.headers.cookie?.split('=')[1];
-    const TeacherSession = await session[sessionid];
-
-
-    if(!TeacherSession){
-        return res.status(401).send("User Session No longer Exist")
-    }
-
-    const TeacherEmail = await TeacherSession.Email;
-    const Password = await TeacherSession.Password;
-
-    try{
-        const TeacherDetail = await teacherModel.findOne({Email:TeacherEmail})
-
-        if(TeacherDetail){
-            res.send({
-                status:true,
-                message:"Teacher Details Retreived Successfully",
-                Firstname:TeacherDetail.Firstname,
-                Lastname:TeacherDetail.Lastname,
-                Email:TeacherDetail.Email,
-                Role:TeacherDetail.Role
-            })
-        }
-    }catch(err){
-        console.error(err);
-        res.status(500).send("Internal Server Error");
-    }
-}
-
-const TeacherLogout = async(req,res)=>{
-    const sessionid = req.headers.cookie && req.headers.cookie.split('=')[1];
-    delete session[sessionid];
-
-    res.cookie('session','',{expires: new Date(0)});
-    return res.send("Teacher Logout successfully")
-
-}
-
 const deleteTeacherController = async(req,res)=>{
 
     try{
@@ -145,5 +112,5 @@ const showAllTeacherController = async (req, res) => {
 };
 
 
-module.exports={createTeacherController,loginTeacherController,deleteTeacherController,showAllTeacherController,CurrentTeacher,TeacherLogout};
+module.exports={createTeacherController,loginTeacherController,deleteTeacherController,showAllTeacherController};
 

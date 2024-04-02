@@ -16,8 +16,7 @@ var createstudentsController = async (req, res) => {
             res.send({"status":false, "message":"Students data is Already Existing in DB"})
             return;
         }
-        var status = await studentsService.createUserDBService(req.body);
-     //   console.log(status)
+        const status = await studentsService.createUserDBService(req.body);
 
        if (status.success) {
             res.status(201).send({
@@ -69,46 +68,6 @@ var loginstudentsController = async(req,res)=>{
     }
 }
 
-
-// var CurrentStudent = async (req, res) => {
-//     const sessionid = req.headers.cookie?.split('=')[1];
-//     const StudentSession = await session[sessionid];
-    
-//     if (!StudentSession) {
-//         console.log('Invalid Session'); // Add this log to see if it enters the condition
-//         return res.status(401).send("User Session is No longer Exist");
-//     }
-     
-//     const studentEmail =StudentSession.Email;
-//     const Password = StudentSession.Password;
- 
-//     try{
-//         const StudentDetail = await studentModel.findOne({Email:studentEmail})
-//         if(StudentDetail){
-//             res.send({
-//                 status:true,
-//                 message:"Student Data Reterived Successfully",
-//                        Firstname:StudentDetail.Firstname,
-//                        Lastname:StudentDetail.Lastname,
-//                        Email:StudentDetail.Email
-//             })
-//             }
-//     }catch(err){
-//         console.error(err);
-//         res.status(500).send("Internal Server Error");
-//     }
-// };
-
-var LogoutStudent = async(req,res)=>{
-
-    const sessionid = req.headers.cookie && req.headers.cookie.split('=')[1];
-    delete session[sessionid];
-
-    res.cookie('session','',{expires: new Date(0)});
-    return res.send('Student Logout successfully');
-}
-
-
 var DeletestudentController = async(req,res)=>{
 
     try{
@@ -145,4 +104,4 @@ var showAllStudentsController = async(req,res)=>{
 }
 
 
-module.exports ={createstudentsController,loginstudentsController,DeletestudentController,showAllStudentsController,LogoutStudent};
+module.exports ={createstudentsController,loginstudentsController,DeletestudentController,showAllStudentsController};
