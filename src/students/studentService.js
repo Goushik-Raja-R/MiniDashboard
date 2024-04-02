@@ -2,14 +2,9 @@ var studentsmodel =require('./studentModel');
 var key ='123456789112345dfg';
 var encryptor = require('simple-encryptor')(key);
 const jwt = require('jsonwebtoken')
+const {GenerateToken} = require('../../middleware/auth')
 
-const GenerateToken =(Email)=>{
-    return jwt.sign({Email},'Secret-key',{
-        expiresIn:'1h'
-    })
-}
-
-//JWT Authentication
+// //JWT Authorization
 module.exports.createUserDBService =async (studentsDetails)=>{
  
     try{
@@ -21,40 +16,17 @@ module.exports.createUserDBService =async (studentsDetails)=>{
     studentsModelData.Password = studentsDetails.Password;
     var encrypted= encryptor.encrypt(studentsDetails.Password);
     studentsModelData.Password = encrypted;
-
+    const token = GenerateToken(studentsDetails.Email)
+    console.log(token)
     await studentsModelData.save();
-    return true;
+    return {success:true,token};
     }
     catch(error){
-        console.log(Object.values(error.errors.properties));
+        console.log(Object.values(error));
         return false;
     }
     
 }
-
-
-// //JWT Authorization
-// module.exports.createUserDBService =async (studentsDetails)=>{
- 
-//     try{
-//     var studentsModelData = new studentsmodel();
-
-//     studentsModelData.Firstname = studentsDetails.Firstname;
-//     studentsModelData.Lastname = studentsDetails.Lastname;
-//     studentsModelData.Email = studentsDetails.Email;
-//     studentsModelData.Password = studentsDetails.Password;
-//     var encrypted= encryptor.encrypt(studentsDetails.Password);
-//     studentsModelData.Password = encrypted;
-//     const token = GenerateToken(studentsDetails.Email)
-//     await studentsModelData.save();
-//     return {success:true,token};
-//     }
-//     catch(error){
-//         console.log(Object.values(error.errors.properties));
-//         return false;
-//     }
-    
-// }
 
 
 module.exports.FindStudentbyEmail = async(email)=>{
@@ -128,3 +100,4 @@ module.exports.showAllStudentsData = async()=>{
         return false;
     }
 }
+

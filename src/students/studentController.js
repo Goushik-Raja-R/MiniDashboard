@@ -8,56 +8,31 @@ app.use(express.json());
 app.use(cookieParser());
 
 // JWT Authorization
-// var createstudentsController = async (req, res) => {
-//     try {
-//         const ExistingStudent = await studentsService.FindStudentbyEmail(req.body.email)  
-
-//         if(ExistingStudent){
-//             res.send({"status":false, "message":"Students data is Already Existing in DB"})
-//             return;
-//         }
-//         var status = await studentsService.createUserDBService(req.body);
-//         console.log(status)
-
-//        if (status.success) {
-//             res.status(201).send({
-//                 status: true,
-//                 message: 'Student created successfully',
-//                 token: status.token
-//             });
-//             console.log('Student created successfully');
-//         } else {
-//             res.status(500).send({
-//                 status: false,
-//                 message: 'Error in Creating Student User',
-//                 error: status.error
-//             });
-//         }
-//     } catch (err) {
-//         console.log(err);
-//         res.status(500).send({"status": false, "message": "Student data you are trying to inserting is already Existing in DB"});
-//     }
-// };
-
-//JWT Authentication
-
 var createstudentsController = async (req, res) => {
     try {
         const ExistingStudent = await studentsService.FindStudentbyEmail(req.body.email)  
-
+ 
         if(ExistingStudent){
             res.send({"status":false, "message":"Students data is Already Existing in DB"})
             return;
         }
-
         var status = await studentsService.createUserDBService(req.body);
-        
-        if(status){
-            res.send({"status":true, "message":" User Created Successfully"})
-        }else{
-            res.send({"status":false, "message":"Error in Creating Teacher User [Check Your EMAIL or PASSWORD] and Enter details Properply"})
-        }
+     //   console.log(status)
 
+       if (status.success) {
+            res.status(201).send({
+                status: true,
+                message: 'Student created successfully',
+                token: status.token
+            });
+            console.log('Student created successfully');
+        } else {
+            res.status(500).send({
+                status: false,
+                message: 'Error in Creating Student User',
+                error: status.error
+            });
+        }
     } catch (err) {
         console.log(err);
         res.status(500).send({"status": false, "message": "Student data you are trying to inserting is already Existing in DB"});
@@ -76,58 +51,53 @@ var loginstudentsController = async(req,res)=>{
             const studentsdetail = await studentModel.findOne({Email:req.body.Email});
             
             if(studentsdetail){
-                const sessionid = uuid();
-                const SessionData ={Email:studentsdetail.Email,Password:studentsdetail.Password}
-                session[sessionid]=SessionData
-                res.cookie('session', sessionid, { httpOnly: true });
-
-                res.send({
-                    status:true,
-                    message:"Cookies created succefully",
-                    data:{
-                        Firstname:studentsdetail.Firstname,
-                        Lastname:studentsdetail.Lastname,
-                        Email:studentsdetail.Email,
+                res.status(200).json({
+                    status: true,
+                    message: 'Student authenticated successfully',
+                    data: {
+                        Firstname: studentsdetail.Firstname,
+                        Lastname: studentsdetail.Lastname,
+                        Email: studentsdetail.Email
                     }
                 });
-            }
-        }else{
+            
+        }}else{
             res.send({"status":false, "message":"Invalid Teachers Details Check Password (or) Email properly"})
-        }
-        
+        } 
     }catch (error){
         res.send({"status":false,"message":"students details invalid"});
     }
 }
 
-var CurrentStudent = async (req, res) => {
-    const sessionid = req.headers.cookie?.split('=')[1];
-    const StudentSession = await session[sessionid];
+
+// var CurrentStudent = async (req, res) => {
+//     const sessionid = req.headers.cookie?.split('=')[1];
+//     const StudentSession = await session[sessionid];
     
-    if (!StudentSession) {
-        console.log('Invalid Session'); // Add this log to see if it enters the condition
-        return res.status(401).send("User Session is No longer Exist");
-    }
+//     if (!StudentSession) {
+//         console.log('Invalid Session'); // Add this log to see if it enters the condition
+//         return res.status(401).send("User Session is No longer Exist");
+//     }
      
-    const studentEmail =StudentSession.Email;
-    const Password = StudentSession.Password;
+//     const studentEmail =StudentSession.Email;
+//     const Password = StudentSession.Password;
  
-    try{
-        const StudentDetail = await studentModel.findOne({Email:studentEmail})
-        if(StudentDetail){
-            res.send({
-                status:true,
-                message:"Student Data Reterived Successfully",
-                       Firstname:StudentDetail.Firstname,
-                       Lastname:StudentDetail.Lastname,
-                       Email:StudentDetail.Email
-            })
-            }
-    }catch(err){
-        console.error(err);
-        res.status(500).send("Internal Server Error");
-    }
-};
+//     try{
+//         const StudentDetail = await studentModel.findOne({Email:studentEmail})
+//         if(StudentDetail){
+//             res.send({
+//                 status:true,
+//                 message:"Student Data Reterived Successfully",
+//                        Firstname:StudentDetail.Firstname,
+//                        Lastname:StudentDetail.Lastname,
+//                        Email:StudentDetail.Email
+//             })
+//             }
+//     }catch(err){
+//         console.error(err);
+//         res.status(500).send("Internal Server Error");
+//     }
+// };
 
 var LogoutStudent = async(req,res)=>{
 
@@ -175,4 +145,4 @@ var showAllStudentsController = async(req,res)=>{
 }
 
 
-module.exports ={createstudentsController,loginstudentsController,DeletestudentController,showAllStudentsController,CurrentStudent,LogoutStudent};
+module.exports ={createstudentsController,loginstudentsController,DeletestudentController,showAllStudentsController,LogoutStudent};
