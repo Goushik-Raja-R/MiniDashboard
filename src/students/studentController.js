@@ -38,7 +38,6 @@ var createstudentsController = async (req, res) => {
     }
 };
 
-const session ={};
 var loginstudentsController = async(req,res)=>{
     var result = null;
     try{
@@ -56,7 +55,8 @@ var loginstudentsController = async(req,res)=>{
                     data: {
                         Firstname: studentsdetail.Firstname,
                         Lastname: studentsdetail.Lastname,
-                        Email: studentsdetail.Email
+                        Email: studentsdetail.Email,
+                        Role: studentsdetail.Role,
                     }
                 });
             

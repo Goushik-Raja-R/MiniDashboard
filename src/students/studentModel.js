@@ -39,6 +39,10 @@ const studentsSchema = new schema({
         type:String,
         required:[true,"Please enter password"],
         validate:[isValidPassword,"minimum password length is 6 characters"] //call to the function isValidPassword
+    },
+    Role:{
+        type: String,
+        required: true,
     }
 });
 

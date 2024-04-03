@@ -3,8 +3,6 @@ const app = express()
 const mongoose = require('mongoose') //importing {'express','mongoose'}
 const routes = require('./routes/routes')
 const cookieParser = require('cookie-parser')
-const StudentController = require('./src/students/studentController')
-const dotenv = require('dotenv')
 
 mongoose.set('strictQuery',false)
 
