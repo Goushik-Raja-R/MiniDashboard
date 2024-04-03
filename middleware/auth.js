@@ -35,4 +35,16 @@ const VerifyTokenHandler = (req,res)=>{
     });
 }
 
-module.exports ={Authentication,GenerateToken,VerifyTokenHandler};
+const RoleCheck = () => {
+    return (req, res, next) => {
+        const { Role } = req.body;
+
+        if (Role === 'Student' || Role === 'Teacher') {
+            next();
+        } else {
+            return res.status(403).json({ message: 'Forbidden: Unauthorized role' });
+        }
+    };
+};
+
+module.exports ={Authentication,GenerateToken,VerifyTokenHandler,RoleCheck};
